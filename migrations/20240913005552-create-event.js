@@ -24,6 +24,16 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      participants: {
+        type: Sequelize.JSONB,
+        defaultValue: [],
+        get() {
+          return this.getDataValue('participants') || [];
+        },
+        set(value) {
+          this.setDataValue('participants', value || []);
+        }
+      },
       creatorId: {
         type: Sequelize.INTEGER,
         references: {

@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    participants: {
+      type: DataTypes.JSONB,
+      defaultValue: [],
+    },
     creatorId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -24,9 +28,6 @@ module.exports = (sequelize, DataTypes) => {
   Event.associate = (models) => {
     // Event belongs to a User (creator)
     Event.belongsTo(models.User, { as: 'creator', foreignKey: 'creatorId' });
-
-    // Many-to-Many relationship: Event has many participants (Users)
-    Event.belongsToMany(models.User, { through: 'EventParticipants', as: 'participants', foreignKey: 'eventId' });
   };
 
   return Event;

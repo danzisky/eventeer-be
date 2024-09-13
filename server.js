@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/event');
@@ -10,7 +12,11 @@ require('./config/passport')(passport);
 const app = express();
 
 // Middleware
-app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
+app.use(bodyParser.json());
 app.use(passport.initialize());
 
 // Routes

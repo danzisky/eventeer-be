@@ -21,9 +21,6 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     // User can create many events
     User.hasMany(models.Event, { as: 'createdEvents', foreignKey: 'creatorId' });
-
-    // Many-to-Many relationship: User can participate in many events
-    User.belongsToMany(models.Event, { through: 'EventParticipants', as: 'attendedEvents', foreignKey: 'userId' });
   };
 
   // Hash password before saving to DB

@@ -10,6 +10,8 @@ const router = express.Router();
 // Register
 router.post('/register', async (req, res) => {
   try {
+    // console.log(req.body);
+
     const { username, email, password } = req.body;
     const user = await User.create({ username, email, password });
     res.json(user);
@@ -21,6 +23,8 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
+    // console.log(req.body);
+
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
     if (!user || !user.validPassword(password)) {
@@ -28,15 +32,13 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token: `Bearer ${token}` });
+    res.json({ token: `${token}` });
   } catch (error) {
+    console.log(error);
     res.status(400).json({ message: 'Error logging in', error });
   }
 });
 
-// Protected Route
-router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({ message: 'You have accessed a protected route', user: req.user });
-});
+/* @TODO: add token refresh functionality */
 
 module.exports = router;
