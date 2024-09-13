@@ -14,7 +14,14 @@ router.post('/register', async (req, res) => {
 
     const { username, email, password } = req.body;
     const user = await User.create({ username, email, password });
-    res.json(user);
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      username: user.username,
+      token: `${token}`
+    });
   } catch (error) {
     res.status(400).json({ message: 'Error registering user', error });
   }
