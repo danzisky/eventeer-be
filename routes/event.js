@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const { city, startDate, endDate, searchText, page = 1, pageSize = 3 } = req.query;
+    const { city, startDate, endDate, searchText, page = 1, pageSize = 3, user = null } = req.query;
 
     // Build the query conditions
     const whereConditions = {};
@@ -27,6 +27,10 @@ router.get('/', async (req, res) => {
       if (endDate) {
         whereConditions.date[Sequelize.Op.lte] = new Date(endDate);
       }
+    }
+
+    if (user) {
+      whereConditions.creatorId = user;
     }
 
     if (searchText) {

@@ -14,7 +14,7 @@ module.exports = {
      * }], {});
     */
 
-    const hashedPassword = await bcrypt.hash('password123', 10); // Use a default password
+    const hashedPassword = await bcrypt.hash('password', 10); // Use a default password
 
     // Insert sample users
     return await queryInterface.bulkInsert('Users', [
