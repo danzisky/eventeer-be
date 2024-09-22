@@ -1,3 +1,5 @@
+const sequelizePaginate = require('sequelize-paginate');
+
 module.exports = (sequelize, DataTypes) => {
   const Event = sequelize.define('Event', {
     title: {
@@ -29,6 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     // Event belongs to a User (creator)
     Event.belongsTo(models.User, { as: 'creator', foreignKey: 'creatorId' });
   };
+
+  sequelizePaginate.paginate(Event);
 
   return Event;
 };

@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const { Event, User } = require('../models');
 const Sequelize = require('sequelize');
+const paginate = require('../utils/paginate');
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const { city, startDate, endDate, searchText } = req.query;
+    const { city, startDate, endDate, searchText, page = 1, pageSize = 3 } = req.query;
 
     // Build the query conditions
     const whereConditions = {};
@@ -35,7 +36,7 @@ router.get('/', async (req, res) => {
     }
 
     // events based on the conditions
-    const events = await Event.findAll({
+    const events = await paginate(Event, page, pageSize, {
       where: whereConditions,
       include: [{ model: User, as: 'creator' }],
     });
